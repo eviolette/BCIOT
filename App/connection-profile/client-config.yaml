@@ -1,0 +1,13 @@
+name: "BCIOT Org1 Client"
+x-type: "hlfv1"
+description: "Client Definition for Org1"
+version: "1.0"
+client:
+  organization: Org1
+  credentialStore:
+    path: "./hfc-kvs/org1"
+    cryptoStore:
+      path: "./hfc-cvs/org1"
+  #connection:
+  #  options
+  #    grpc.keepalive_time_ms: 120000

@@ -272,12 +272,22 @@
             "BatchNumber": "TESTBATCH0001",
             "Owner": "testOrg1",
             "Deleted": false
+        },
+        {
+            "BatchNumber": "TESTBATCH0001",
+            "Owner": "testOrg2",
+            "Deleted": false
         }
     ],
     "Batches": [
         {
             "BatchNumber": "TESTBATCH0001",
             "Owner": "testOrg1",
+            "Deleted": false
+        },
+        {
+            "BatchNumber": "TESTBATCH0001",
+            "Owner": "testOrg2",
             "Deleted": false
         }
     ]
