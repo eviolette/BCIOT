@@ -129,10 +129,13 @@ app.post('/users', awaitHandler(async (req, res) => {
 //////////////////////////////// CUSTOM APIs ////// ///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-app.get('/test', awaitHandler(async (req, res) => {
-	logger.info('================ GET on Donor');
-	let args = {};
-	let fcn = "queryAllDonors";
+app.get('/purchase-order', awaitHandler(async (req, res) => {
+	logger.info('================ GET on Purchase Order');
+	let args = JSON.stringify({
+		"PurchaseOrderID": req.params.POID,
+		"Owner": req.params.Owner
+	});
+	let fcn = "getPurchaseOrder";
 
     logger.info('##### GET on mycc - username : ' + username);
 	logger.info('##### GET on mycc - userOrg : ' + orgName);
@@ -145,43 +148,6 @@ app.get('/test', awaitHandler(async (req, res) => {
     let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
  	res.send(message);
 }));
-
-app.get('/test/:UserName', awaitHandler(async (req, res) => {
-	logger.info('================ GET on mycc by ID');
-	logger.info('mycc username : ' + req.params);
-	let args = req.params;
-	let fcn = "query";
-
-    logger.info('##### GET on mycc by username - username : ' + username);
-	logger.info('##### GET on mycc by username - userOrg : ' + orgName);
-	logger.info('##### GET on mycc by username - channelName : ' + channelName);
-	logger.info('##### GET on mycc by username - chaincodeName : ' + chaincodeName);
-	logger.info('##### GET on mycc by username - fcn : ' + fcn);
-	logger.info('##### GET on mycc by username - args : ' + JSON.stringify(args));
-    logger.info('##### GET on mycc by username - peers : ' + peers);
-    logger.info(args.UserName)
-
-    let message = await query.queryChaincode(peers, channelName, chaincodeName, args.UserName, fcn, username, orgName);
- 	res.send(message);
-}));
-
-app.post('/test', awaitHandler(async (req, res) => {
-	logger.info('================ POST on mycc');
-	var args = req.body;
-	var fcn = "invoke";
-
-    logger.info('##### POST on mycc - username : ' + username);
-	logger.info('##### POST on mycc - userOrg : ' + orgName);
-	logger.info('##### POST on mycc - channelName : ' + channelName);
-	logger.info('##### POST on mycc - chaincodeName : ' + chaincodeName);
-	logger.info('##### POST on mycc - fcn : ' + fcn);
-	logger.info('##### POST on mycc - args : ' + JSON.stringify(args));
-	logger.info('##### POST on mycc - peers : ' + peers);
-
-	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
-	res.send(message);
-}));
-
 
 /************************************************************************************
  * Error handler

@@ -2,7 +2,7 @@ var util = require('util');
 var helper = require('./connection.js');
 var logger = helper.getLogger('Query');
 
-var queryChaincode = async function(peers, channelName, chaincodeName, args, fcn, username, orgName) {
+var queryChaincode = async function(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName) {
 	try {
 		// setup the client for this org
 		var client = await helper.getClientForOrg(orgName, username);
@@ -19,7 +19,7 @@ var queryChaincode = async function(peers, channelName, chaincodeName, args, fcn
 			targets : peers, 
 			chaincodeId: chaincodeName,
 			fcn: fcn,
-			args: [args]
+			args: [args, organizationIdentity]
 		};
 
 		logger.info('##### queryChaincode - Query request to Fabric %s', JSON.stringify(request));
