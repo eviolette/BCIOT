@@ -39,23 +39,29 @@ var queryChaincode = async function(peers, channelName, chaincodeName, organizat
 				logger.error(message);
 				throw new Error(message);	
 			}
-            // we will only use the first response. We strip out the Fabric key and just return the payload
-            let json = JSON.parse(responses[0].toString('utf8'));
-			logger.info('##### queryChaincode - Query json %s', util.inspect(json));
-			if (Array.isArray(json)) {
-				for (let key in json) {
-					if (json[key]['Record']) {
-						ret.push(json[key]['Record']); 
-					} 
-					else {
-						ret.push(json[key]); 
+			// we will only use the first response. We strip out the Fabric key and just return the payload
+			try {
+				let json = JSON.parse(responses[0].toString('utf8'));
+				logger.info('##### queryChaincode - Query json %s', util.inspect(json));
+				if (Array.isArray(json)) {
+					for (let key in json) {
+						if (json[key]['Record']) {
+							ret.push(json[key]['Record']); 
+						} 
+						else {
+							ret.push(json[key]); 
+						}
 					}
 				}
+				else {
+					ret.push(json); 
+				}
+				return ret;
 			}
-			else {
-				ret.push(json); 
+			catch(error) {
+				ret.push(response);
+				return ret
 			}
- 			return ret;
 		} 
 		else {
 			logger.error('##### queryChaincode - result of query, responses is null');
