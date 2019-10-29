@@ -21,7 +21,7 @@ const uuidv4 = require('uuid/v4');
 
 var connection = require('./connection.js');
 var query = require('./query.js');
-//var invoke = require('./invoke.js');
+var invoke = require('./invoke.js');
 var blockListener = require('./blocklistener.js');
 
 hfc.addConfigFile('config.json');
