@@ -2,10 +2,10 @@
 var log4js = require('log4js');
 log4js.configure({
 	appenders: {
-	  out: { type: 'stdout' },
+		out: { type: 'stdout' },
 	},
 	categories: {
-	  default: { appenders: ['out'], level: 'info' },
+		default: { appenders: ['out'], level: 'info' },
 	}
 });
 var logger = log4js.getLogger('BCIOTAPI');
@@ -43,8 +43,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: false
 }));
-app.use(function(req, res, next) {
-	logger.info(' ##### New request for URL %s',req.originalUrl);
+app.use(function (req, res, next) {
+	logger.info(' ##### New request for URL %s', req.originalUrl);
 	return next();
 });
 
@@ -56,7 +56,7 @@ const awaitHandler = (fn) => {
 	return async (req, res, next) => {
 		try {
 			await fn(req, res, next)
-		} 
+		}
 		catch (err) {
 			next(err)
 		}
@@ -66,9 +66,9 @@ const awaitHandler = (fn) => {
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// START SERVER /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-var server = http.createServer(app).listen(port, function() {});
+var server = http.createServer(app).listen(port, function () { });
 logger.info('****************** SERVER STARTED ************************');
-logger.info('***************  Listening on: http://%s:%s  ******************',host,port);
+logger.info('***************  Listening on: http://%s:%s  ******************', host, port);
 server.timeout = 240000;
 
 function getErrorMessage(field) {
@@ -111,48 +111,410 @@ app.post('/users', awaitHandler(async (req, res) => {
 	logger.info('##### POST on Users - userorg  : ' + orgName);
 	let response = await connection.getRegisteredUser(username, orgName, true);
 	logger.info('##### POST on Users - returned from registering the username %s for organization %s', username, orgName);
-    logger.info('##### POST on Users - getRegisteredUser response secret %s', response.secret);
-    logger.info('##### POST on Users - getRegisteredUser response secret %s', response.message);
-    if (response && typeof response !== 'string') {
-        logger.info('##### POST on Users - Successfully registered the username %s for organization %s', username, orgName);
+	logger.info('##### POST on Users - getRegisteredUser response secret %s', response.secret);
+	logger.info('##### POST on Users - getRegisteredUser response secret %s', response.message);
+	if (response && typeof response !== 'string') {
+		logger.info('##### POST on Users - Successfully registered the username %s for organization %s', username, orgName);
 		logger.info('##### POST on Users - getRegisteredUser response %s', response);
 		// Now that we have a username & org, we can start the block listener
 		await blockListener.startBlockListener(channelName, username, orgName, wss);
 		res.json(response);
 	} else {
 		logger.error('##### POST on Users - Failed to register the username %s for organization %s with::%s', username, orgName, response);
-		res.json({success: false, message: response});
+		res.json({ success: false, message: response });
 	}
 }));
 
 ///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////// CUSTOM APIs ////// ///////////////////////////
+//////////////////////////////// CUSTOM APIs //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+//Purchase Order
+app.post('/purchase-order', awaitHandler(async (req, res) => {
+	logger.info('================ POST on Purchase Order');
+	let args = JSON.stringify(req.body)
+	let fcn = "createPurchaseOrder";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
 
 app.get('/purchase-order', awaitHandler(async (req, res) => {
 	logger.info('================ GET on Purchase Order');
 	let args = JSON.stringify({
-		"PurchaseOrderID": req.params.POID,
-		"Owner": req.params.Owner
+		"PurchaseOrderID": req.query.PurchaseOrderID,
+		"Owner": req.query.Owner
 	});
 	let fcn = "getPurchaseOrder";
 
-    logger.info('##### GET on mycc - username : ' + username);
-	logger.info('##### GET on mycc - userOrg : ' + orgName);
-	logger.info('##### GET on mycc - channelName : ' + channelName);
-	logger.info('##### GET on mycc - chaincodeName : ' + chaincodeName);
-	logger.info('##### GET on mycc - fcn : ' + fcn);
-	logger.info('##### GET on mycc - args : ' + JSON.stringify(args));
-	logger.info('##### GET on mycc - peers : ' + peers);
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
 
-    let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
- 	res.send(message);
+	let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+app.delete('/purchase-order', awaitHandler(async (req, res) => {
+	logger.info('================ DELETE on Purchase Order');
+	let args = JSON.stringify({
+		"PurchaseOrderID": req.query.PurchaseOrderID,
+		"Owner": req.query.Owner
+	});
+	let fcn = "deletePurchaseOrder";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+//Production Order
+app.post('/report/goods-receipt/production-order', awaitHandler(async (req, res) => {
+	logger.info('================ POST on Production Order Goods Receipt');
+	let args = JSON.stringify(req.body)
+	let fcn = "reportProductionOrderGR";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+app.get('/production-order', awaitHandler(async (req, res) => {
+	logger.info('================ GET on Production Order');
+	let args = JSON.stringify({
+		"ProductionOrderID": req.query.ProductionOrderID,
+		"Owner": req.query.Owner
+	});
+	let fcn = "getProductionOrder";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+app.delete('/production-order', awaitHandler(async (req, res) => {
+	logger.info('================ DELETE on Production Order');
+	let args = JSON.stringify({
+		"ProductionOrderID": req.query.ProductionOrderID,
+		"Owner": req.query.Owner
+	});
+	let fcn = "deleteProductionOrder";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+//Sales Order
+app.post('/sales-order', awaitHandler(async (req, res) => {
+	logger.info('================ POST on Sales Order');
+	let args = JSON.stringify(req.body)
+	let fcn = "createSalesOrder";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+app.get('/sales-order', awaitHandler(async (req, res) => {
+	logger.info('================ GET on Sales Order');
+	let args = JSON.stringify({
+		"SalesOrderID": req.query.SalesOrderID,
+		"Owner": req.query.Owner
+	});
+	let fcn = "getSalesOrder";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+app.delete('/sales-order', awaitHandler(async (req, res) => {
+	logger.info('================ DELETE on Sales Order');
+	let args = JSON.stringify({
+		"SalesOrderID": req.query.SalesOrderID,
+		"Owner": req.query.Owner
+	});
+	let fcn = "deleteSalesOrder";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+//Delivery
+app.post('/delivery', awaitHandler(async (req, res) => {
+	logger.info('================ POST on Delivery');
+	let args = JSON.stringify(req.body)
+	let fcn = "createDelivery";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+app.get('/delivery', awaitHandler(async (req, res) => {
+	logger.info('================ GET on Delivery');
+	let args = JSON.stringify({
+		"SalesOrderID": req.query.SalesOrderID,
+		"DeliveryNumber": req.query.DeliveryNumber,
+		"Owner": req.query.Owner
+	});
+	let fcn = "getDelivery";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+app.delete('/delivery', awaitHandler(async (req, res) => {
+	logger.info('================ DELETE on Production Order');
+	let args = JSON.stringify({
+		"SalesOrderID": req.query.SalesOrderID,
+		"DeliveryNumber": req.query.DeliveryNumber,
+		"Owner": req.query.Owner
+	});
+	let fcn = "deleteDelivery";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+//Shipment
+app.post('/shipment', awaitHandler(async (req, res) => {
+	logger.info('================ POST on Shipment');
+	let args = JSON.stringify(req.body)
+	let fcn = "createShipment";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+app.get('/shipment', awaitHandler(async (req, res) => {
+	logger.info('================ GET on Shipment');
+	let args = JSON.stringify(req.query.ShipmentID);
+	let fcn = "getShipment";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+app.delete('/shipment', awaitHandler(async (req, res) => {
+	logger.info('================ DELETE on Shipment');
+	let args = JSON.stringify(req.query.ShipmentID);
+	let fcn = "deleteShipment";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+//Goods Receipt Purchase Order 
+app.post('/report/goods-receipt/purchase-order', awaitHandler(async (req, res) => {
+	logger.info('================ POST on Purchase Order Goods Receipt');
+	let args = JSON.stringify(req.body)
+	let fcn = "reportPurchaseOrderGR";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+//Batch
+app.get('/batch', awaitHandler(async (req, res) => {
+	logger.info('================ GET on Batch');
+	let args = JSON.stringify({
+		"MaterialID": req.query.MaterialID,
+		"BatchNumber": req.query.BatchNumber,
+		"Owner": req.query.Owner
+	});
+	let fcn = "getBatch";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+app.delete('/batch', awaitHandler(async (req, res) => {
+	logger.info('================ DELETE on Batch');
+	let args = JSON.stringify({
+		"MaterialID": req.query.MaterialID,
+		"BatchNumber": req.query.BatchNumber,
+		"Owner": req.query.Owner
+	});
+	let fcn = "deleteBatch";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+//Material
+app.get('/material', awaitHandler(async (req, res) => {
+	logger.info('================ GET on Material');
+	let args = JSON.stringify(req.query.MaterialID);
+	let fcn = "getMaterial";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+app.delete('/material', awaitHandler(async (req, res) => {
+	logger.info('================ DELETE on Material');
+	let args = JSON.stringify(req.query.MaterialID);
+	let fcn = "deleteMaterial";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
 }));
 
 /************************************************************************************
  * Error handler
  ************************************************************************************/
 
-app.use(function(error, req, res, next) {
+app.use(function (error, req, res, next) {
 	res.status(500).json({ error: error.toString() });
 });

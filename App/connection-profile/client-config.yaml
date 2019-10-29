@@ -5,9 +5,9 @@ version: "1.0"
 client:
   organization: Org1
   credentialStore:
-    path: "./hfc-kvs/org1"
+    path: "/tmp/hfc-kvs/org1"
     cryptoStore:
-      path: "./hfc-cvs/org1"
+      path: "/tmp/hfc-cvs/org1"
   #connection:
   #  options
   #    grpc.keepalive_time_ms: 120000

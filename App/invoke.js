@@ -3,7 +3,7 @@ var util = require('util');
 var helper = require('./connection.js');
 var logger = helper.getLogger('Invoke');
 
-var invokeChaincode = async function(peerNames, channelName, chaincodeName, args, fcn, username, orgName) {
+var invokeChaincode = async function(peerNames, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName) {
 	logger.info(util.format('\n============ invokeChaincode - chaincode %s, function %s, on the channel \'%s\' for org: %s\n',
 		chaincodeName, fcn, channelName, orgName));
 	var error_message = null;
@@ -26,7 +26,7 @@ var invokeChaincode = async function(peerNames, channelName, chaincodeName, args
 			targets: peerNames,
 			chaincodeId: chaincodeName,
 			fcn: fcn,
-			args: [args.start, args.end, args.amount],
+			args: [args, organizationIdentity],
 			chainId: channelName,
 			txId: txId
 		};
