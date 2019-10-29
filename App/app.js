@@ -383,7 +383,7 @@ app.post('/shipment', awaitHandler(async (req, res) => {
 
 app.get('/shipment', awaitHandler(async (req, res) => {
 	logger.info('================ GET on Shipment');
-	let args = JSON.stringify(req.query.ShipmentID);
+	let args = req.query.ShipmentID;
 	let fcn = "getShipment";
 
 	logger.info('##### Request INFO - username : ' + username);
@@ -400,7 +400,7 @@ app.get('/shipment', awaitHandler(async (req, res) => {
 
 app.delete('/shipment', awaitHandler(async (req, res) => {
 	logger.info('================ DELETE on Shipment');
-	let args = JSON.stringify(req.query.ShipmentID);
+	let args = req.query.ShipmentID;
 	let fcn = "deleteShipment";
 
 	logger.info('##### Request INFO - username : ' + username);
@@ -479,7 +479,7 @@ app.delete('/batch', awaitHandler(async (req, res) => {
 //Material
 app.get('/material', awaitHandler(async (req, res) => {
 	logger.info('================ GET on Material');
-	let args = JSON.stringify(req.query.MaterialID);
+	let args = req.query.MaterialID;
 	let fcn = "getMaterial";
 
 	logger.info('##### Request INFO - username : ' + username);
@@ -496,7 +496,7 @@ app.get('/material', awaitHandler(async (req, res) => {
 
 app.delete('/material', awaitHandler(async (req, res) => {
 	logger.info('================ DELETE on Material');
-	let args = JSON.stringify(req.query.MaterialID);
+	let args = req.query.MaterialID;
 	let fcn = "deleteMaterial";
 
 	logger.info('##### Request INFO - username : ' + username);
