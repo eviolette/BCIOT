@@ -1,0 +1,147 @@
+name: "bciot-network-connection-profile"
+x-type: "hlfv1"
+description: "BCIOT Network Connection Profile"
+version: "1.0"
+
+channels:
+  bciotchannel:
+    orderers:
+      - orderer.com
+    peers:
+      nd-3OY6SVJHHREUPGQ2MNSV4FIQEY:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      nd-SB5XUNND4VB2NN6445EEGPOZGE:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      nd-R23OUJDNWRH77FI3AG2GLWRV2E:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      nd-7SMLF6JFCZCYBAYM3IKSGHM4MQ:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      nd-KTZVOHP5EZEYDNOCUTOEBIDM4I:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      nd-AWLKEECEHFGC7OOWU7IQQGM6ZI:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+organizations:
+  Org1:
+    mspid: m-WGEYHVXIXVCLVHPVTARNFSFLRY
+    peers:
+      - nd-3OY6SVJHHREUPGQ2MNSV4FIQEY
+      - nd-SB5XUNND4VB2NN6445EEGPOZGE
+    certificateAuthorities:
+      - ca-org1
+  Org2:
+    mspid: m-OXF7EACFTZANXLOZTEOAJ7YCKY
+    peers:
+      - nd-R23OUJDNWRH77FI3AG2GLWRV2E
+      - nd-7SMLF6JFCZCYBAYM3IKSGHM4MQ
+    certificateAuthorities:
+      - ca-org2
+  Org3:
+    mspid: m-QBXZBDQEP5F5FHMCTCIFZG6WZE
+    peers:
+      - nd-KTZVOHP5EZEYDNOCUTOEBIDM4I
+      - nd-AWLKEECEHFGC7OOWU7IQQGM6ZI
+    certificateAuthorities:
+      - ca-org3
+
+orderers:
+  orderer.com:
+    url: grpcs://orderer.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30001
+    grpcOptions:
+      ssl-target-name-override: orderer.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com
+    tlsCACerts:
+      path: /home/ec2-user/managedblockchain-tls-chain.pem
+
+peers:
+  nd-3OY6SVJHHREUPGQ2MNSV4FIQEY:
+    url: grpcs://nd-3oy6svjhhreupgq2mnsv4fiqey.m-wgeyhvxixvclvhpvtarnfsflry.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30005
+    eventUrl: grpcs://nd-3oy6svjhhreupgq2mnsv4fiqey.m-wgeyhvxixvclvhpvtarnfsflry.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30006
+    grpcOptions:
+      ssl-target-name-override: nd-3oy6svjhhreupgq2mnsv4fiqey.m-wgeyhvxixvclvhpvtarnfsflry.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com
+    tlsCACerts:
+      path: /home/ec2-user/managedblockchain-tls-chain.pem
+  nd-SB5XUNND4VB2NN6445EEGPOZGE:
+    url: grpcs://nd-sb5xunnd4vb2nn6445eegpozge.m-wgeyhvxixvclvhpvtarnfsflry.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30003
+    eventUrl: grpcs://nd-sb5xunnd4vb2nn6445eegpozge.m-wgeyhvxixvclvhpvtarnfsflry.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30004
+    grpcOptions:
+      ssl-target-name-override: nd-sb5xunnd4vb2nn6445eegpozge.m-wgeyhvxixvclvhpvtarnfsflry.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com
+    tlsCACerts:
+      path: /home/ec2-user/managedblockchain-tls-chain.pem
+  nd-R23OUJDNWRH77FI3AG2GLWRV2E:
+    url: grpcs://nd-r23oujdnwrh77fi3ag2glwrv2e.m-oxf7eacftzanxlozteoaj7ycky.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30008
+    eventUrl: grpcs://nd-r23oujdnwrh77fi3ag2glwrv2e.m-oxf7eacftzanxlozteoaj7ycky.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30009
+    grpcOptions:
+      ssl-target-name-override: nd-r23oujdnwrh77fi3ag2glwrv2e.m-oxf7eacftzanxlozteoaj7ycky.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com
+    tlsCACerts:
+      path: /home/ec2-user/managedblockchain-tls-chain.pem
+  nd-7SMLF6JFCZCYBAYM3IKSGHM4MQ:
+    url: grpcs://nd-7smlf6jfczcybaym3iksghm4mq.m-oxf7eacftzanxlozteoaj7ycky.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30010
+    eventUrl: grpcs://nd-7smlf6jfczcybaym3iksghm4mq.m-oxf7eacftzanxlozteoaj7ycky.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30011
+    grpcOptions:
+      ssl-target-name-override: nd-7smlf6jfczcybaym3iksghm4mq.m-oxf7eacftzanxlozteoaj7ycky.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com
+    tlsCACerts:
+      path: /home/ec2-user/managedblockchain-tls-chain.pem
+  nd-KTZVOHP5EZEYDNOCUTOEBIDM4I:
+    url: grpcs://nd-ktzvohp5ezeydnocutoebidm4i.m-qbxzbdqep5f5fhmctcifzg6wze.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30013
+    eventUrl: grpcs://nd-ktzvohp5ezeydnocutoebidm4i.m-qbxzbdqep5f5fhmctcifzg6wze.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30014
+    grpcOptions:
+      ssl-target-name-override: nd-ktzvohp5ezeydnocutoebidm4i.m-qbxzbdqep5f5fhmctcifzg6wze.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com
+    tlsCACerts:
+      path: /home/ec2-user/managedblockchain-tls-chain.pem
+  nd-AWLKEECEHFGC7OOWU7IQQGM6ZI:
+    url: grpcs://nd-awlkeecehfgc7oowu7iqqgm6zi.m-qbxzbdqep5f5fhmctcifzg6wze.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30015
+    eventUrl: grpcs://nd-awlkeecehfgc7oowu7iqqgm6zi.m-qbxzbdqep5f5fhmctcifzg6wze.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30016
+    grpcOptions:
+      ssl-target-name-override: nd-awlkeecehfgc7oowu7iqqgm6zi.m-qbxzbdqep5f5fhmctcifzg6wze.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com
+    tlsCACerts:
+      path: /home/ec2-user/managedblockchain-tls-chain.pem
+
+certificateAuthorities:
+  ca-org1:
+    url: https://ca.m-wgeyhvxixvclvhpvtarnfsflry.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30002
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/ec2-user/managedblockchain-tls-chain.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: AdminPwd1
+    caName: m-WGEYHVXIXVCLVHPVTARNFSFLRY
+  ca-org2:
+    url: https://ca.m-oxf7eacftzanxlozteoaj7ycky.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30007
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/ec2-user/managedblockchain-tls-chain.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: AdminPwd1
+    caName: m-OXF7EACFTZANXLOZTEOAJ7YCKY
+  ca-org3:
+    url: https://ca.m-qbxzbdqep5f5fhmctcifzg6wze.n-5b3e3dqxbjcexik6mvyyvofdc4.managedblockchain.us-east-1.amazonaws.com:30012
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/ec2-user/managedblockchain-tls-chain.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: AdminPwd1
+    caName: m-QBXZBDQEP5F5FHMCTCIFZG6WZE

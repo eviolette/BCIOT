@@ -1,0 +1,18 @@
+{
+    "host":"localhost",
+    "port":"3000",
+    "channelName":"bciotchannel",
+    "chaincodeName":"Testing1",
+    "eventWaitTime":"15000",
+    "organizationIdentity":"testOrg3",
+    "peers":[
+        "nd-KTZVOHP5EZEYDNOCUTOEBIDM4I",
+        "nd-AWLKEECEHFGC7OOWU7IQQGM6ZI"
+    ],
+    "admins":[
+       {
+          "username":"admin",
+          "secret":"AdminPwd1"
+       }
+    ]
+}
