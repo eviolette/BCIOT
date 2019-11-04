@@ -1,0 +1,57 @@
+//Inputs
+//Purchase
+{
+    "PurchaseOrderID": "TESTPO0001",
+    "Vendor": "TEST VENDOR",
+    "LineItemNumber": "TESTLI0001",
+    "MaterialID": "TESTMAT0001",
+    "Quantity": 100
+}
+//Purchase Order 
+{
+    "ProductionOrderID": "TESTPRODORD0001",
+    "MaterialID": "TESTMAT0001",
+    "Quantity": 500,
+    "Plant": "TESTPLANT",
+    "StorageLocation": "TESTSLOC",
+    "BatchNumber": "TESTBATCH0001"
+}
+//Sales Order 
+{
+    "SalesOrderID": "TESTSO0001",
+    "POReference": "TESTPO0001",
+    "LineItemNumber": "TESTLI0001",
+    "MaterialID": "TESTMAT0001",
+    "Quantity": 100
+}
+//Delivery
+{
+    "DeliveryNumber": "TESTDEL0001",
+    "MaterialID": "TESTMAT0001",
+    "HUID": "TESTHU0001",
+    "BatchNumber": "TESTBATCH0001",
+    "Quantity": 100,
+    "SalesOrderID": "TESTSO0001",
+    "LineItemNumber": "TESTLI0001"
+}
+//Shipment
+{
+    "DeliveryNumber": "TESTDEL0001",
+    "ShipmentID": "TESTSHIP0001",
+    "SalesOrderID": "TESTSO0001"
+}
+//Shipment Sensor Data 
+{
+    "ShipmentID": "TESTSHIP0001",
+    "Data": "{\"locData\": {\"c\": {\"o\": \"AT&T\",\"a\": [{\"i\": 4530559,\"l\": 56961,\"c\": 310,\"n\": 410}]}},\"tempData\": {\"Celcius\": 30.700001,\"Fahrenheit\": 78.260002,\"Kelvin\": 298.850006,\"Humidity\": 14.4,\"DewPoint\": -3.429169}}"
+}
+//Purchase Order GR
+{
+    "PurchaseOrderID": "TESTPO0001",
+    "LineItemNumber": "TESTLI0001",
+    "MaterialID": "TESTMAT0001",
+    "Quantity": 100,
+    "Plant": "TESTPLANT",
+    "StorageLocation": "TESTSLOC",
+    "BatchNumber": "TESTBATCH0001"
+}

@@ -1674,7 +1674,6 @@ func (t *Testing1) reportShipmentContamination(stub shim.ChaincodeStubInterface,
 		if puterr := stub.PutState(strings.ToLower(batchkeystring), batchJsonBytes); puterr != nil {
 			return shim.Error("Invoke Error (Report Shipment Contamination): Error while storing data into Blockchain")
 		}
-		return shim.Success(nil)
 	}
 
 	// Store Shipment in Blockchain

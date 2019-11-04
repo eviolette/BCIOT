@@ -23,7 +23,7 @@
     "Asset_Type": "PURCHASEORDER",
     "PurchaseOrderID": "TESTPO0001",
     "Owner": "testOrg2",
-    "Vendor": "TEST",
+    "Vendor": "TEST VENDOR",
     "LineItems": [
         {
             "LineItemNumber": "TESTLI0001",
@@ -168,7 +168,10 @@
             "LineItemNumber": "TESTLI0001",
             "MaterialID": "TESTMAT0001",
             "Quantity": 100,
-            "SourceBatch": "TESTBATCH0001"
+            "SourceBatch": "TESTBATCH0001",
+            "HandlingUnits": [
+                "TESTHU0001"
+            ]
         }
     ],
     "Shipments": null
@@ -203,7 +206,8 @@
         {
             "HUID": "TESTHU0001",
             "Quantity": 100,
-            "DeliveryNumber": "TESTDEL0001"
+            "DeliveryNumber": "TESTDEL0001",
+            "Status": "OK"
         }
     ],
     "Status": "OK"
@@ -217,6 +221,7 @@
     "ShipmentID": "TESTSHIP0001",
     "Owner": "testOrg1",
     "DeliveryNumber": "TESTDEL0001",
+    "SalesOrderID": "TESTSO0001",
     "Status": "OPEN",
     "SensorReadings": null
 }
@@ -231,12 +236,65 @@
             "LineItemNumber": "TESTLI0001",
             "MaterialID": "TESTMAT0001",
             "Quantity": 100,
-            "SourceBatch": "TESTBATCH0001"
+            "SourceBatch": "TESTBATCH0001",
+            "HandlingUnits": [
+                "TESTHU0001"
+            ]
         }
     ],
     "Shipments": [
         "TESTSHIP0001"
     ]
+}
+//*****************************************************************************************************
+//Shipment Sensor-Readings
+//*****************************************************************************************************
+{
+    "Asset_Type": "SHIPMENT",
+    "ShipmentID": "TESTSHIP0001",
+    "Owner": "testOrg1",
+    "DeliveryNumber": "TESTDEL0001",
+    "SalesOrderID": "TESTSO0001",
+    "Status": "OPEN",
+    "SensorReadings": [
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}"
+    ]
+}
+//*****************************************************************************************************
+//Shipment Contamination
+//*****************************************************************************************************
+//Shipment
+{
+    "Asset_Type": "SHIPMENT",
+    "ShipmentID": "TESTSHIP0001",
+    "Owner": "testOrg1",
+    "DeliveryNumber": "TESTDEL0001",
+    "SalesOrderID": "TESTSO0001",
+    "Status": "CONTAMINATED",
+    "SensorReadings": [
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}"
+    ]
+}
+//Batch
+{
+    "Asset_Type": "BATCH",
+    "BatchNumber": "TESTBATCH0001",
+    "MaterialID": "TESTMAT0001",
+    "Owner": "testOrg1",
+    "Plant": "TESTPLANT",
+    "StorageLocation": "TESTSLOC",
+    "AvailableQuantity": 400,
+    "HandlingUnits": [
+        {
+            "HUID": "TESTHU0001",
+            "Quantity": 100,
+            "DeliveryNumber": "TESTDEL0001",
+            "Status": "CONTAMINATED"
+        }
+    ],
+    "Status": "OK"
 }
 //*****************************************************************************************************
 //Report Purchase Order GR
@@ -297,7 +355,7 @@
     "Asset_Type": "PURCHASEORDER",
     "PurchaseOrderID": "TESTPO0001",
     "Owner": "testOrg2",
-    "Vendor": "TEST",
+    "Vendor": "TEST VENDOR",
     "LineItems": [
         {
             "LineItemNumber": "TESTLI0001",
@@ -343,6 +401,10 @@
     "ShipmentID": "TESTSHIP0001",
     "Owner": "testOrg1",
     "DeliveryNumber": "TESTDEL0001",
+    "SalesOrderID": "TESTSO0001",
     "Status": "COMPLETED",
-    "SensorReadings": null
+    "SensorReadings": [
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}"
+    ]
 }
