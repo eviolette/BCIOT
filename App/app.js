@@ -125,6 +125,17 @@ app.post('/users', awaitHandler(async (req, res) => {
 	}
 }));
 
+app.delete('/users', awaitHandler(async (req, res) => {
+	logger.info('================ DELETE on Users');
+	username = req.body.username;
+	orgName = req.body.orgName;
+	logger.info('##### End point : /users');
+	logger.info('##### DELETE on Users- username : ' + username);
+	logger.info('##### DELETE on Users - userorg  : ' + orgName);
+	let response = await connection.revokeRegisteredUser(username, orgName);
+	logger.info('##### DELETE on Users - returned from registering the username %s for organization %s', username, orgName);
+}));
+
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// CUSTOM APIs //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
