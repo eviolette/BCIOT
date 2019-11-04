@@ -1608,18 +1608,8 @@ func (t *Testing1) reportShipmentContamination(stub shim.ChaincodeStubInterface,
 		return shim.Error("Invoke Error: Incorrect number of arguments - Two Argument expected")
 	}
 
-	//Define the structure for expected incoming JSON as argument
-	type QueryData struct {
-		ShipmentID string `json:"ShipmentID"`
-	}
-
 	//Get Data
 	data := string(args[0])
-	queryData := QueryData{}
-	err := json.Unmarshal([]byte(data), &queryData)
-	if err != nil {
-		return shim.Error("Invoke Error (Report Shipment Contamination):  Invalid Data - Check Payload")
-	}
 	//Get Invoking Participant
 	participantNamespace := "PARTICIPANT"
 	participantID := string(args[1])
@@ -1630,7 +1620,7 @@ func (t *Testing1) reportShipmentContamination(stub shim.ChaincodeStubInterface,
 	batchNamespace := "BATCH"
 
 	//Key for fetching/storing the Asset
-	keystring := namespace + "-" + queryData.ShipmentID
+	keystring := namespace + "-" + data
 
 	//Check if Invoking Participant already exists, return error if not.
 	if value, geterr := stub.GetState(strings.ToLower(participantKey)); geterr != nil || value == nil {
