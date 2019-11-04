@@ -1,5 +1,5 @@
 //Inputs
-//Purchase
+//Purchase Order (ME23n) - RETAILER
 {
     "PurchaseOrderID": "TESTPO0001",
     "Vendor": "TEST VENDOR",
@@ -7,7 +7,7 @@
     "MaterialID": "TESTMAT0001",
     "Quantity": 100
 }
-//Purchase Order 
+//Production Order Goods Receipt (MIGO) - MANUFACTURER
 {
     "ProductionOrderID": "TESTPRODORD0001",
     "MaterialID": "TESTMAT0001",
@@ -16,7 +16,7 @@
     "StorageLocation": "TESTSLOC",
     "BatchNumber": "TESTBATCH0001"
 }
-//Sales Order 
+//Sales Order (VA01) - MANUFACTURER
 {
     "SalesOrderID": "TESTSO0001",
     "POReference": "TESTPO0001",
@@ -24,7 +24,7 @@
     "MaterialID": "TESTMAT0001",
     "Quantity": 100
 }
-//Delivery
+//Delivery (VL01n) - MANUFACTURER
 {
     "DeliveryNumber": "TESTDEL0001",
     "MaterialID": "TESTMAT0001",
@@ -34,18 +34,22 @@
     "SalesOrderID": "TESTSO0001",
     "LineItemNumber": "TESTLI0001"
 }
-//Shipment
+//Shipment (VT01n) - MANUFACTURER
 {
     "DeliveryNumber": "TESTDEL0001",
     "ShipmentID": "TESTSHIP0001",
     "SalesOrderID": "TESTSO0001"
 }
-//Shipment Sensor Data 
+//Shipment Sensor Data (IOT will send this data) - TRANSPORTER
 {
     "ShipmentID": "TESTSHIP0001",
     "Data": "{\"locData\": {\"c\": {\"o\": \"AT&T\",\"a\": [{\"i\": 4530559,\"l\": 56961,\"c\": 310,\"n\": 410}]}},\"tempData\": {\"Celcius\": 30.700001,\"Fahrenheit\": 78.260002,\"Kelvin\": 298.850006,\"Humidity\": 14.4,\"DewPoint\": -3.429169}}"
 }
-//Purchase Order GR
+//Shipment Contamination (IOT will send this data) - TRANSPORTER
+{
+    "ShipmentID": "TESTSHIP0001",
+}
+//Purchase Order Goods Receipt (MIGO) - RETAILER
 {
     "PurchaseOrderID": "TESTPO0001",
     "LineItemNumber": "TESTLI0001",
