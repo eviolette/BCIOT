@@ -125,6 +125,18 @@ app.post('/users', awaitHandler(async (req, res) => {
 	}
 }));
 
+app.delete('/users', awaitHandler(async (req, res) => {
+	logger.info('================ DELETE on Users');
+	username = req.body.username;
+	orgName = req.body.orgName;
+	logger.info('##### End point : /users');
+	logger.info('##### DELETE on Users- username : ' + username);
+	logger.info('##### DELETE on Users - userorg  : ' + orgName);
+	let response = await connection.revokeRegisteredUser(username, orgName);
+	logger.info('##### DELETE on Users - returned from registering the username %s for organization %s', username, orgName);
+	res.json({ success: true });
+}));
+
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// CUSTOM APIs //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -415,10 +427,46 @@ app.delete('/shipment', awaitHandler(async (req, res) => {
 	res.send(message);
 }));
 
+//Shipment Sensor Readings
+app.post('/report/shipment/sensor-reading', awaitHandler(async (req, res) => {
+	logger.info('================ POST on Shipment Sensor Reading');
+	let args = JSON.stringify(req.body);
+	let fcn = "reportSensorReading";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+//Shipment Contamination
+app.post('/report/shipment/contamination', awaitHandler(async (req, res) => {
+	logger.info('================ POST on Shipment Contamination');
+	let args = req.query.ShipmentID;
+	let fcn = "reportShipmentContamination";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
 //Goods Receipt Purchase Order 
 app.post('/report/goods-receipt/purchase-order', awaitHandler(async (req, res) => {
 	logger.info('================ POST on Purchase Order Goods Receipt');
-	let args = JSON.stringify(req.body)
+	let args = JSON.stringify(req.body);
 	let fcn = "reportPurchaseOrderGR";
 
 	logger.info('##### Request INFO - username : ' + username);
@@ -508,6 +556,42 @@ app.delete('/material', awaitHandler(async (req, res) => {
 	logger.info('##### Request INFO - peers : ' + peers);
 
 	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+//Query Ledger
+app.post('/ledger/query', awaitHandler(async (req, res) => {
+	logger.info('================ Query on Ledger Data');
+	let args = JSON.stringify(req.body);
+	let fcn = "getHistory";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+//Asset History
+app.get('/ledger/history', awaitHandler(async (req, res) => {
+	logger.info('================ Query on Ledger History');
+	let args = req.query.AssetID;
+	let fcn = "customQueries";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
 	res.send(message);
 }));
 
