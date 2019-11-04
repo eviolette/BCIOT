@@ -1,7 +1,7 @@
 //Inputs
 //Purchase Order (ME23n) - RETAILER
 {
-    "PurchaseOrderID": "TESTPO0001",
+    "PurchaseOrderID": "TESTPO0002",
     "Vendor": "TEST VENDOR",
     "LineItemNumber": "TESTLI0001",
     "MaterialID": "TESTMAT0001",
@@ -18,40 +18,40 @@
 }
 //Sales Order (VA01) - MANUFACTURER
 {
-    "SalesOrderID": "TESTSO0001",
-    "POReference": "TESTPO0001",
+    "SalesOrderID": "TESTSO0002",
+    "POReference": "TESTPO0002",
     "LineItemNumber": "TESTLI0001",
     "MaterialID": "TESTMAT0001",
     "Quantity": 100
 }
 //Delivery (VL01n) - MANUFACTURER
 {
-    "DeliveryNumber": "TESTDEL0001",
+    "DeliveryNumber": "TESTDEL0002",
     "MaterialID": "TESTMAT0001",
-    "HUID": "TESTHU0001",
+    "HUID": "TESTHU0002",
     "BatchNumber": "TESTBATCH0001",
     "Quantity": 100,
-    "SalesOrderID": "TESTSO0001",
+    "SalesOrderID": "TESTSO0002",
     "LineItemNumber": "TESTLI0001"
 }
 //Shipment (VT01n) - MANUFACTURER
 {
-    "DeliveryNumber": "TESTDEL0001",
-    "ShipmentID": "TESTSHIP0001",
-    "SalesOrderID": "TESTSO0001"
+    "DeliveryNumber": "TESTDEL0002",
+    "ShipmentID": "TESTSHIP0002",
+    "SalesOrderID": "TESTSO0002"
 }
 //Shipment Sensor Data (IOT will send this data) - TRANSPORTER
 {
-    "ShipmentID": "TESTSHIP0001",
+    "ShipmentID": "TESTSHIP0002",
     "Data": "{\"locData\": {\"c\": {\"o\": \"AT&T\",\"a\": [{\"i\": 4530559,\"l\": 56961,\"c\": 310,\"n\": 410}]}},\"tempData\": {\"Celcius\": 30.700001,\"Fahrenheit\": 78.260002,\"Kelvin\": 298.850006,\"Humidity\": 14.4,\"DewPoint\": -3.429169}}"
 }
 //Shipment Contamination (IOT will send this data) - TRANSPORTER
 {
-    "ShipmentID": "TESTSHIP0001",
+    "ShipmentID": "TESTSHIP0002",
 }
 //Purchase Order Goods Receipt (MIGO) - RETAILER
 {
-    "PurchaseOrderID": "TESTPO0001",
+    "PurchaseOrderID": "TESTPO0002",
     "LineItemNumber": "TESTLI0001",
     "MaterialID": "TESTMAT0001",
     "Quantity": 100,

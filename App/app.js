@@ -563,7 +563,7 @@ app.delete('/material', awaitHandler(async (req, res) => {
 app.post('/ledger/query', awaitHandler(async (req, res) => {
 	logger.info('================ Query on Ledger Data');
 	let args = JSON.stringify(req.body);
-	let fcn = "getHistory";
+	let fcn = "customQueries";
 
 	logger.info('##### Request INFO - username : ' + username);
 	logger.info('##### Request INFO - userOrg : ' + orgName);
@@ -581,7 +581,7 @@ app.post('/ledger/query', awaitHandler(async (req, res) => {
 app.get('/ledger/history', awaitHandler(async (req, res) => {
 	logger.info('================ Query on Ledger History');
 	let args = req.query.AssetID;
-	let fcn = "customQueries";
+	let fcn = "getHistory";
 
 	logger.info('##### Request INFO - username : ' + username);
 	logger.info('##### Request INFO - userOrg : ' + orgName);

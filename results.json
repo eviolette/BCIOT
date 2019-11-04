@@ -7,21 +7,77 @@
     "MaterialID": "TESTMAT0001",
     "OpenPurchaseOrders": [
         {
-            "PurchaseOrderID": "TESTPO0001",
+            "PurchaseOrderID": "TESTPO0002",
             "Owner": "testOrg2",
             "AssociatedSalesOrders": null,
             "Deleted": false
         }
     ],
-    "ClosedPurchaseOrders": null,
-    "ProductionOrders": null,
-    "ActiveBatches": null,
-    "Batches": null
+    "ClosedPurchaseOrders": [
+        {
+            "PurchaseOrderID": "TESTPO0001",
+            "Owner": "testOrg2",
+            "AssociatedSalesOrders": [
+                {
+                    "SalesOrderID": "TESTSO0001",
+                    "Owner": "testOrg1",
+                    "Deleted": false
+                }
+            ],
+            "Deleted": false
+        }
+    ],
+    "ProductionOrders": [
+        {
+            "ProductionOrderID": "TESTPRODORD0001",
+            "Owner": "testOrg1",
+            "Deleted": false
+        }
+    ],
+    "ActiveBatches": [
+        {
+            "BatchNumber": "TESTBATCH0001",
+            "Owner": "testOrg1",
+            "Deleted": false
+        },
+        {
+            "BatchNumber": "TESTBATCH0001",
+            "Owner": "testOrg2",
+            "Deleted": false
+        }
+    ],
+    "Batches": [
+        {
+            "BatchNumber": "TESTBATCH0001",
+            "Owner": "testOrg1",
+            "Deleted": false
+        },
+        {
+            "BatchNumber": "TESTBATCH0001",
+            "Owner": "testOrg2",
+            "Deleted": false
+        }
+    ]
 }
 // Purchase Order Asset
 {
     "Asset_Type": "PURCHASEORDER",
     "PurchaseOrderID": "TESTPO0001",
+    "Owner": "testOrg2",
+    "Vendor": "TEST VENDOR",
+    "LineItems": [
+        {
+            "LineItemNumber": "TESTLI0001",
+            "MaterialID": "TESTMAT0001",
+            "Quantity": 100
+        }
+    ],
+    "Status": "OPEN",
+    "TargetBatch": ""
+}
+{
+    "Asset_Type": "PURCHASEORDER",
+    "PurchaseOrderID": "TESTPO0002",
     "Owner": "testOrg2",
     "Vendor": "TEST VENDOR",
     "LineItems": [
@@ -102,6 +158,20 @@
     "MaterialID": "TESTMAT0001",
     "OpenPurchaseOrders": [
         {
+            "PurchaseOrderID": "TESTPO0002",
+            "Owner": "testOrg2",
+            "AssociatedSalesOrders": [
+                {
+                    "SalesOrderID": "TESTSO0002",
+                    "Owner": "testOrg1",
+                    "Deleted": false
+                }
+            ],
+            "Deleted": false
+        }
+    ],
+    "ClosedPurchaseOrders": [
+        {
             "PurchaseOrderID": "TESTPO0001",
             "Owner": "testOrg2",
             "AssociatedSalesOrders": [
@@ -114,7 +184,6 @@
             "Deleted": false
         }
     ],
-    "ClosedPurchaseOrders": null,
     "ProductionOrders": [
         {
             "ProductionOrderID": "TESTPRODORD0001",
@@ -127,12 +196,22 @@
             "BatchNumber": "TESTBATCH0001",
             "Owner": "testOrg1",
             "Deleted": false
+        },
+        {
+            "BatchNumber": "TESTBATCH0001",
+            "Owner": "testOrg2",
+            "Deleted": false
         }
     ],
     "Batches": [
         {
             "BatchNumber": "TESTBATCH0001",
             "Owner": "testOrg1",
+            "Deleted": false
+        },
+        {
+            "BatchNumber": "TESTBATCH0001",
+            "Owner": "testOrg2",
             "Deleted": false
         }
     ]
@@ -143,6 +222,22 @@
     "SalesOrderID": "TESTSO0001",
     "Owner": "testOrg1",
     "POReference": "TESTPO0001",
+    "POOwner": "testOrg2",
+    "LineItems": [
+        {
+            "LineItemNumber": "TESTLI0001",
+            "MaterialID": "TESTMAT0001",
+            "Quantity": 100
+        }
+    ],
+    "DeliveryNumber": "",
+    "Status": "OPEN"
+}
+{
+    "Asset_Type": "SALESORDER",
+    "SalesOrderID": "TESTSO0002",
+    "Owner": "testOrg1",
+    "POReference": "TESTPO0002",
     "POOwner": "testOrg2",
     "LineItems": [
         {
@@ -176,6 +271,24 @@
     ],
     "Shipments": null
 }
+{
+    "Asset_Type": "DELIVERY",
+    "DeliveryNumber": "TESTDEL0002",
+    "SalesOrderID": "TESTSO0002",
+    "Owner": "testOrg1",
+    "LineItems": [
+        {
+            "LineItemNumber": "TESTLI0001",
+            "MaterialID": "TESTMAT0001",
+            "Quantity": 100,
+            "SourceBatch": "TESTBATCH0001",
+            "HandlingUnits": [
+                "TESTHU0002"
+            ]
+        }
+    ],
+    "Shipments": null
+}
 //Sales Order Asset
 {
     "Asset_Type": "SALESORDER",
@@ -191,6 +304,22 @@
         }
     ],
     "DeliveryNumber": "TESTDEL0001",
+    "Status": "OPEN"
+}
+{
+    "Asset_Type": "SALESORDER",
+    "SalesOrderID": "TESTSO0002",
+    "Owner": "testOrg1",
+    "POReference": "TESTPO0002",
+    "POOwner": "testOrg2",
+    "LineItems": [
+        {
+            "LineItemNumber": "TESTLI0001",
+            "MaterialID": "TESTMAT0001",
+            "Quantity": 100
+        }
+    ],
+    "DeliveryNumber": "TESTDEL0002",
     "Status": "OPEN"
 }
 //Batch Asset
@@ -212,6 +341,30 @@
     ],
     "Status": "OK"
 }
+{
+    "Asset_Type": "BATCH",
+    "BatchNumber": "TESTBATCH0001",
+    "MaterialID": "TESTMAT0001",
+    "Owner": "testOrg1",
+    "Plant": "TESTPLANT",
+    "StorageLocation": "TESTSLOC",
+    "AvailableQuantity": 300,
+    "HandlingUnits": [
+        {
+            "HUID": "TESTHU0001",
+            "Quantity": 100,
+            "DeliveryNumber": "TESTDEL0001",
+            "Status": "CONTAMINATED"
+        },
+        {
+            "HUID": "TESTHU0002",
+            "Quantity": 100,
+            "DeliveryNumber": "TESTDEL0002",
+            "Status": "OK"
+        }
+    ],
+    "Status": "OK"
+}
 //*****************************************************************************************************
 //Create Shipment (VT01n) - MANUFACTURER
 //*****************************************************************************************************
@@ -222,6 +375,15 @@
     "Owner": "testOrg1",
     "DeliveryNumber": "TESTDEL0001",
     "SalesOrderID": "TESTSO0001",
+    "Status": "OPEN",
+    "SensorReadings": null
+}
+{
+    "Asset_Type": "SHIPMENT",
+    "ShipmentID": "TESTSHIP0002",
+    "Owner": "testOrg1",
+    "DeliveryNumber": "TESTDEL0002",
+    "SalesOrderID": "TESTSO0002",
     "Status": "OPEN",
     "SensorReadings": null
 }
@@ -246,6 +408,26 @@
         "TESTSHIP0001"
     ]
 }
+{
+    "Asset_Type": "DELIVERY",
+    "DeliveryNumber": "TESTDEL0002",
+    "SalesOrderID": "TESTSO0002",
+    "Owner": "testOrg1",
+    "LineItems": [
+        {
+            "LineItemNumber": "TESTLI0001",
+            "MaterialID": "TESTMAT0001",
+            "Quantity": 100,
+            "SourceBatch": "TESTBATCH0001",
+            "HandlingUnits": [
+                "TESTHU0002"
+            ]
+        }
+    ],
+    "Shipments": [
+        "TESTSHIP0002"
+    ]
+}
 //*****************************************************************************************************
 //Shipment Sensor-Readings (IOT will send the data) - TRANSPORTER
 //*****************************************************************************************************
@@ -257,6 +439,19 @@
     "SalesOrderID": "TESTSO0001",
     "Status": "OPEN",
     "SensorReadings": [
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}"
+    ]
+}
+{
+    "Asset_Type": "SHIPMENT",
+    "ShipmentID": "TESTSHIP0002",
+    "Owner": "testOrg1",
+    "DeliveryNumber": "TESTDEL0002",
+    "SalesOrderID": "TESTSO0002",
+    "Status": "OPEN",
+    "SensorReadings": [
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
         "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
         "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}"
     ]
@@ -273,6 +468,19 @@
     "SalesOrderID": "TESTSO0001",
     "Status": "CONTAMINATED",
     "SensorReadings": [
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}"
+    ]
+}
+{
+    "Asset_Type": "SHIPMENT",
+    "ShipmentID": "TESTSHIP0002",
+    "Owner": "testOrg1",
+    "DeliveryNumber": "TESTDEL0002",
+    "SalesOrderID": "TESTSO0002",
+    "Status": "CONTAMINATED",
+    "SensorReadings": [
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
         "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
         "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}"
     ]
@@ -296,6 +504,30 @@
     ],
     "Status": "OK"
 }
+{
+    "Asset_Type": "BATCH",
+    "BatchNumber": "TESTBATCH0001",
+    "MaterialID": "TESTMAT0001",
+    "Owner": "testOrg1",
+    "Plant": "TESTPLANT",
+    "StorageLocation": "TESTSLOC",
+    "AvailableQuantity": 300,
+    "HandlingUnits": [
+        {
+            "HUID": "TESTHU0001",
+            "Quantity": 100,
+            "DeliveryNumber": "TESTDEL0001",
+            "Status": "CONTAMINATED"
+        },
+        {
+            "HUID": "TESTHU0002",
+            "Quantity": 100,
+            "DeliveryNumber": "TESTDEL0002",
+            "Status": "CONTAMINATED"
+        }
+    ],
+    "Status": "OK"
+}
 //*****************************************************************************************************
 //Report Purchase Order GR (MIGO) - RETAILER
 //*****************************************************************************************************
@@ -311,6 +543,18 @@
             "AssociatedSalesOrders": [
                 {
                     "SalesOrderID": "TESTSO0001",
+                    "Owner": "testOrg1",
+                    "Deleted": false
+                }
+            ],
+            "Deleted": false
+        },
+        {
+            "PurchaseOrderID": "TESTPO0002",
+            "Owner": "testOrg2",
+            "AssociatedSalesOrders": [
+                {
+                    "SalesOrderID": "TESTSO0002",
                     "Owner": "testOrg1",
                     "Deleted": false
                 }
@@ -366,6 +610,21 @@
     "Status": "COMPLETED",
     "TargetBatch": "TESTBATCH0001"
 }
+{
+    "Asset_Type": "PURCHASEORDER",
+    "PurchaseOrderID": "TESTPO0002",
+    "Owner": "testOrg2",
+    "Vendor": "TEST VENDOR",
+    "LineItems": [
+        {
+            "LineItemNumber": "TESTLI0001",
+            "MaterialID": "TESTMAT0001",
+            "Quantity": 100
+        }
+    ],
+    "Status": "COMPLETED",
+    "TargetBatch": "TESTBATCH0001"
+}
 //Batch Asset
 {
     "Asset_Type": "BATCH",
@@ -374,7 +633,7 @@
     "Owner": "testOrg2",
     "Plant": "TESTPLANT",
     "StorageLocation": "TESTSLOC",
-    "AvailableQuantity": 100,
+    "AvailableQuantity": 200,
     "HandlingUnits": null,
     "Status": "CONTAMINATED"
 }
@@ -395,6 +654,22 @@
     "DeliveryNumber": "TESTDEL0001",
     "Status": "COMPLETED"
 }
+{
+    "Asset_Type": "SALESORDER",
+    "SalesOrderID": "TESTSO0002",
+    "Owner": "testOrg1",
+    "POReference": "TESTPO0002",
+    "POOwner": "testOrg2",
+    "LineItems": [
+        {
+            "LineItemNumber": "TESTLI0001",
+            "MaterialID": "TESTMAT0001",
+            "Quantity": 100
+        }
+    ],
+    "DeliveryNumber": "TESTDEL0002",
+    "Status": "COMPLETED"
+}
 //Shipment Asset
 {
     "Asset_Type": "SHIPMENT",
@@ -404,6 +679,19 @@
     "SalesOrderID": "TESTSO0001",
     "Status": "CONTAMINATED",
     "SensorReadings": [
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}"
+    ]
+}
+{
+    "Asset_Type": "SHIPMENT",
+    "ShipmentID": "TESTSHIP0002",
+    "Owner": "testOrg1",
+    "DeliveryNumber": "TESTDEL0002",
+    "SalesOrderID": "TESTSO0002",
+    "Status": "CONTAMINATED",
+    "SensorReadings": [
+        "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
         "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}",
         "{"locData": {"c": {"o": "AT&T","a": [{"i": 4530559,"l": 56961,"c": 310,"n": 410}]}},"tempData": {"Celcius": 30.700001,"Fahrenheit": 78.260002,"Kelvin": 298.850006,"Humidity": 14.4,"DewPoint": -3.429169}}"
     ]
