@@ -547,6 +547,42 @@ app.delete('/material', awaitHandler(async (req, res) => {
 	res.send(message);
 }));
 
+//Query Ledger
+app.post('/ledger/query', awaitHandler(async (req, res) => {
+	logger.info('================ Query on Ledger Data');
+	let args = JSON.stringify(req.body);
+	let fcn = "getHistory";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+//Asset History
+app.get('/ledger/history', awaitHandler(async (req, res) => {
+	logger.info('================ Query on Ledger History');
+	let args = req.query.AssetID;
+	let fcn = "customQueries";
+
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - chaincodeName : ' + chaincodeName);
+	logger.info('##### Request INFO - fcn : ' + fcn);
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await query.queryChaincode(peers, channelName, chaincodeName, organizationIdentity, args, fcn, username, orgName);
+	res.send(message);
+}));
+
 /************************************************************************************
  * Error handler
  ************************************************************************************/

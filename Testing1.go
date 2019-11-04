@@ -1685,7 +1685,7 @@ func (t *Testing1) reportShipmentContamination(stub shim.ChaincodeStubInterface,
 	return shim.Success(nil)
 }
 
-// CASE 19 Get Shipment Info
+// CASE 21 Get Shipment Info
 func (t *Testing1) getShipment(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	//Checks appropriate number of arguments in incoming invoke request
 	if len(args) < 2 {
@@ -1717,7 +1717,7 @@ func (t *Testing1) getShipment(stub shim.ChaincodeStubInterface, args []string) 
 	return shim.Success(value)
 }
 
-// CASE 20 Delete a Shipment
+// CASE 22 Delete a Shipment
 func (t *Testing1) deleteShipment(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	//Checks appropriate number of arguments in incoming invoke request
 	if len(args) < 2 {
@@ -1753,7 +1753,7 @@ func (t *Testing1) deleteShipment(stub shim.ChaincodeStubInterface, args []strin
 	return shim.Success(nil)
 }
 
-// CASE 21 Report a Purchase Order Goods Receipt
+// CASE 23 Report a Purchase Order Goods Receipt
 func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	//Checks appropriate number of arguments in incoming invoke request
 	if len(args) < 2 {
@@ -1999,7 +1999,7 @@ func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args 
 	return shim.Success(nil)
 }
 
-// CASE XX Get Material Info
+// CASE 24 Get Material Info
 func (t *Testing1) getMaterial(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	//Checks appropriate number of arguments in incoming invoke request
 	if len(args) < 2 {
@@ -2031,7 +2031,7 @@ func (t *Testing1) getMaterial(stub shim.ChaincodeStubInterface, args []string) 
 	return shim.Success(value)
 }
 
-// CASE XX Delete a Delivery
+// CASE 25 Delete a Delivery
 func (t *Testing1) deleteMaterial(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	//Checks appropriate number of arguments in incoming invoke request
 	if len(args) < 2 {
