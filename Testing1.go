@@ -140,6 +140,7 @@ type BatchHandlingUnit struct {
 	HUID           string `json:"HUID"`
 	Quantity       int    `json:"Quantity"`
 	DeliveryNumber string `json:"DeliveryNumber, omitempty"`
+	Status         string `json:"Status, omitempty"`
 }
 
 //Define the Production Order structure, with XXX properties.
@@ -165,25 +166,23 @@ type Delivery struct {
 }
 
 type DeliveryLineItem struct {
-	LineItemNumber string `json:"LineItemNumber"`
-	MaterialID     string `json:"MaterialID"`
-	Quantity       int    `json:"Quantity"`
-	SourceBatch    string `json:"SourceBatch"`
+	LineItemNumber string   `json:"LineItemNumber"`
+	MaterialID     string   `json:"MaterialID"`
+	Quantity       int      `json:"Quantity"`
+	SourceBatch    string   `json:"SourceBatch"`
+	HandlingUnits  []string `json:"HandlingUnits, omitempty"`
 }
 
 //Define the Shipment structure, with XXX properties.
 //Structure tags are used by encoding/json library.
 type Shipment struct {
-	Asset_Type     string                  `json:"Asset_Type, omitempty"`
-	ShipmentID     string                  `json:"ShipmentID"`
-	Owner          string                  `json:"Owner"`
-	DeliveryNumber string                  `json:"DeliveryNumber"`
-	Status         string                  `json:"Status"`
-	SensorReadings []ShipmentSensorReading `json:"SensorReadings, omitempty"`
-}
-
-type ShipmentSensorReading struct {
-	TempCelcius string `json:"TempCelcius"`
+	Asset_Type     string   `json:"Asset_Type, omitempty"`
+	ShipmentID     string   `json:"ShipmentID"`
+	Owner          string   `json:"Owner"`
+	DeliveryNumber string   `json:"DeliveryNumber"`
+	SalesOrderID   string   `json:"SalesOrderID"`
+	Status         string   `json:"Status"`
+	SensorReadings []string `json:"SensorReadings, omitempty"`
 }
 
 // Main function (only used for Unit Testing)
@@ -251,6 +250,10 @@ func (t *Testing1) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 		return t.deleteDelivery(stub, args)
 	case "createShipment":
 		return t.createShipment(stub, args)
+	case "reportSensorReading":
+		return t.reportSensorReading(stub, args)
+	case "reportShipmentContamination":
+		return t.reportShipmentContamination(stub, args)
 	case "getShipment":
 		return t.getShipment(stub, args)
 	case "deleteShipment":
@@ -1277,6 +1280,7 @@ func (t *Testing1) createDelivery(stub shim.ChaincodeStubInterface, args []strin
 	deliveryLineItem.MaterialID = queryData.MaterialID
 	deliveryLineItem.Quantity = queryData.Quantity
 	deliveryLineItem.SourceBatch = queryData.BatchNumber
+	deliveryLineItem.HandlingUnits = append(deliveryLineItem.HandlingUnits, queryData.HUID)
 	//Delivery
 	delivery := Delivery{}
 	delivery.Asset_Type = namespace
@@ -1333,6 +1337,7 @@ func (t *Testing1) createDelivery(stub shim.ChaincodeStubInterface, args []strin
 	batchHU.DeliveryNumber = queryData.DeliveryNumber
 	batchHU.HUID = queryData.HUID
 	batchHU.Quantity = queryData.Quantity
+	batchHU.Status = batch.Status
 	//Update Batch Available Quantity and HU
 	batch.AvailableQuantity -= queryData.Quantity
 	batch.HandlingUnits = append(batch.HandlingUnits, batchHU)
@@ -1455,7 +1460,7 @@ func (t *Testing1) deleteDelivery(stub shim.ChaincodeStubInterface, args []strin
 	}
 }
 
-// CASE 18 Delete a Shipment
+// CASE 18 Create a Shipment
 func (t *Testing1) createShipment(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	//Checks appropriate number of arguments in incoming invoke request
 	if len(args) < 2 {
@@ -1494,6 +1499,7 @@ func (t *Testing1) createShipment(stub shim.ChaincodeStubInterface, args []strin
 	shipment.ShipmentID = queryData.ShipmentID
 	shipment.Owner = participantID
 	shipment.DeliveryNumber = queryData.DeliveryNumber
+	shipment.SalesOrderID = queryData.SalesOrderID
 	shipment.Status = "OPEN"
 
 	//Key for fetching/storing the Asset
@@ -1533,6 +1539,158 @@ func (t *Testing1) createShipment(stub shim.ChaincodeStubInterface, args []strin
 	jsonBytes, _ := json.Marshal(shipment) //Get Bytes from struct
 	if puterr := stub.PutState(strings.ToLower(keystring), jsonBytes); puterr != nil {
 		return shim.Error("Invoke Error (Create Shipment): Error while storing data into Blockchain")
+	}
+	return shim.Success(nil)
+}
+
+// CASE 19 Report an IOT Sensor Reading for Shipment
+func (t *Testing1) reportSensorReading(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+	//Checks appropriate number of arguments in incoming invoke request
+	if len(args) < 2 {
+		return shim.Error("Invoke Error: Incorrect number of arguments - Two Argument expected")
+	}
+
+	//Define the structure for expected incoming JSON as argument
+	type QueryData struct {
+		ShipmentID string `json:"ShipmentID"`
+		Data       string `json:"Data"`
+	}
+
+	//Get Data
+	data := string(args[0])
+	queryData := QueryData{}
+	err := json.Unmarshal([]byte(data), &queryData)
+	if err != nil {
+		return shim.Error("Invoke Error (Report Shipment Sensor Data):  Invalid Data - Check Payload")
+	}
+	//Get Invoking Participant
+	participantNamespace := "PARTICIPANT"
+	participantID := string(args[1])
+	participantKey := participantNamespace + "-" + participantID
+	//Define Namespace
+	namespace := "SHIPMENT"
+
+	//Key for fetching/storing the Asset
+	keystring := namespace + "-" + queryData.ShipmentID
+
+	//Check if Invoking Participant already exists, return error if not.
+	if value, geterr := stub.GetState(strings.ToLower(participantKey)); geterr != nil || value == nil {
+		return shim.Error("Invoke Error (Report Shipment Sensor Data): Invoking Participant Does Not Exists! Please Enroll Participant")
+	}
+
+	//Check if Data is Empty
+	if len(queryData.Data) == 0 {
+		return shim.Error("Invoke Error (Report Shipment Sensor Data): Invoking Participant Does Not Exists! Please Enroll Participant")
+	}
+
+	//Get Shipment
+	shipValue, shipGetErr := stub.GetState(strings.ToLower(keystring))
+	if shipGetErr != nil || shipValue == nil {
+		return shim.Error("Invoke Error (Report Shipment Sensor Data): Shipment Does Not Exists! Please Check Payload")
+	}
+	shipment := Shipment{}
+	json.Unmarshal(shipValue, &shipment)
+
+	shipment.SensorReadings = append(shipment.SensorReadings, queryData.Data)
+
+	// Store Shipment in Blockchain
+	jsonBytes, _ := json.Marshal(shipment) //Get Bytes from struct
+	if puterr := stub.PutState(strings.ToLower(keystring), jsonBytes); puterr != nil {
+		return shim.Error("Invoke Error (Report Shipment Sensor Data): Error while storing data into Blockchain")
+	}
+	return shim.Success(nil)
+}
+
+// CASE 20 Report a Shipment Contamination
+func (t *Testing1) reportShipmentContamination(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+	//Checks appropriate number of arguments in incoming invoke request
+	if len(args) < 2 {
+		return shim.Error("Invoke Error: Incorrect number of arguments - Two Argument expected")
+	}
+
+	//Define the structure for expected incoming JSON as argument
+	type QueryData struct {
+		ShipmentID string `json:"ShipmentID"`
+	}
+
+	//Get Data
+	data := string(args[0])
+	queryData := QueryData{}
+	err := json.Unmarshal([]byte(data), &queryData)
+	if err != nil {
+		return shim.Error("Invoke Error (Report Shipment Contamination):  Invalid Data - Check Payload")
+	}
+	//Get Invoking Participant
+	participantNamespace := "PARTICIPANT"
+	participantID := string(args[1])
+	participantKey := participantNamespace + "-" + participantID
+	//Define Namespace
+	namespace := "SHIPMENT"
+	deliveryNamespace := "DELIVERY"
+	batchNamespace := "BATCH"
+
+	//Key for fetching/storing the Asset
+	keystring := namespace + "-" + queryData.ShipmentID
+
+	//Check if Invoking Participant already exists, return error if not.
+	if value, geterr := stub.GetState(strings.ToLower(participantKey)); geterr != nil || value == nil {
+		return shim.Error("Invoke Error (Report Shipment Contamination): Invoking Participant Does Not Exists! Please Enroll Participant")
+	}
+
+	//Get Shipment
+	shipValue, shipGetErr := stub.GetState(strings.ToLower(keystring))
+	if shipGetErr != nil || shipValue == nil {
+		return shim.Error("Invoke Error (Report Shipment Contamination): Shipment Does Not Exists! Please Check Payload")
+	}
+	shipment := Shipment{}
+	json.Unmarshal(shipValue, &shipment)
+
+	shipment.Status = "CONTAMINATED"
+
+	//Get Delivery
+	deliverykeystring := deliveryNamespace + "-" + shipment.Owner + "-" + shipment.SalesOrderID + "-" + shipment.DeliveryNumber
+	deliveryValue, deliveryGetErr := stub.GetState(strings.ToLower(deliverykeystring))
+	if deliveryGetErr != nil || deliveryValue == nil {
+		return shim.Error("Invoke Error (Report Shipment Contamination): Delivery Does Not Exists! Please Check Payload")
+	}
+	delivery := Delivery{}
+	json.Unmarshal(deliveryValue, &delivery)
+
+	//Update Batch Handling Units
+	for _, element := range delivery.LineItems {
+		//Get Batch
+		batchkeystring := batchNamespace + "-" + delivery.Owner + "-" + element.MaterialID + "-" + element.SourceBatch
+		batchValue, batchGetErr := stub.GetState(strings.ToLower(batchkeystring))
+		if batchGetErr != nil || batchValue == nil {
+			return shim.Error("Invoke Error (Report Shipment Contamination): Batch Does Not Exists! Please Check Payload")
+		}
+		batch := Batch{}
+		json.Unmarshal(batchValue, &batch)
+
+		//Update Batch Handling Units
+		for index1, element1 := range batch.HandlingUnits {
+			if strings.ToLower(element1.DeliveryNumber) == strings.ToLower(shipment.DeliveryNumber) {
+				for _, element2 := range element.HandlingUnits {
+					if strings.ToLower(element1.HUID) == strings.ToLower(element2) {
+						element1.Status = "CONTAMINATED"
+						batch.HandlingUnits[index1] = element1
+					}
+				}
+			}
+		}
+
+		// Store Batch in Blockchain
+		batchJsonBytes, _ := json.Marshal(batch) //Get Bytes from struct
+		if puterr := stub.PutState(strings.ToLower(batchkeystring), batchJsonBytes); puterr != nil {
+			return shim.Error("Invoke Error (Report Shipment Contamination): Error while storing data into Blockchain")
+		}
+		return shim.Success(nil)
+	}
+
+	// Store Shipment in Blockchain
+	jsonBytes, _ := json.Marshal(shipment) //Get Bytes from struct
+	if puterr := stub.PutState(strings.ToLower(keystring), jsonBytes); puterr != nil {
+		return shim.Error("Invoke Error (Report Shipment Contamination): Error while storing data into Blockchain")
 	}
 	return shim.Success(nil)
 }
@@ -1816,7 +1974,11 @@ func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args 
 	json.Unmarshal(shipmentValue, &shipment)
 
 	//Update Shipment
-	shipment.Status = "COMPLETED"
+	if shipment.Status == "CONTAMINATED" {
+		batch.Status = "CONTAMINATED"
+	} else {
+		shipment.Status = "COMPLETED"
+	}
 
 	// Store Assets inside Blockchain
 	// Store Material in Blockchain
