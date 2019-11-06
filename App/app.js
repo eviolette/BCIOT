@@ -23,6 +23,7 @@ var connection = require('./connection.js');
 var query = require('./query.js');
 var invoke = require('./invoke.js');
 var blockListener = require('./blocklistener.js');
+var channelInfo = require('./channelInfo.js');
 
 hfc.addConfigFile('config.json');
 var host = 'localhost';
@@ -135,6 +136,17 @@ app.delete('/users', awaitHandler(async (req, res) => {
 	let response = await connection.revokeRegisteredUser(username, orgName);
 	logger.info('##### DELETE on Users - returned from registering the username %s for organization %s', username, orgName);
 	res.json({ success: true });
+}));
+
+app.get('/channel/height', awaitHandler(async (req, res) => {
+	logger.info('================ GET on ChannelInfo');
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await channelInfo.queryChannelInfo(peers, channelName, username, orgName);
+	res.send(message);
 }));
 
 ///////////////////////////////////////////////////////////////////////////////
