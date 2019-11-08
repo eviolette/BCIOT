@@ -149,6 +149,32 @@ app.get('/channel/height', awaitHandler(async (req, res) => {
 	res.send(message);
 }));
 
+app.get('/channel/block', awaitHandler(async (req, res) => {
+	let args = parseInt(req.query.BlockNumber)
+	logger.info('================ GET on ChannelInfo');
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await channelInfo.queryBlock(args, peers, channelName, username, orgName);
+	res.send(message);
+}));
+
+app.get('/channel/block/tx_id', awaitHandler(async (req, res) => {
+	let args = toString(req.query.TxID)
+	logger.info('================ GET on ChannelInfo');
+	logger.info('##### Request INFO - args : ' + args);
+	logger.info('##### Request INFO - username : ' + username);
+	logger.info('##### Request INFO - userOrg : ' + orgName);
+	logger.info('##### Request INFO - channelName : ' + channelName);
+	logger.info('##### Request INFO - peers : ' + peers);
+
+	let message = await channelInfo.queryBlockByTxID(args, peers, channelName, username, orgName);
+	res.send(message);
+}));
+
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// CUSTOM APIs //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
