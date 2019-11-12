@@ -1104,6 +1104,7 @@ func (t *Testing1) createSalesOrder(stub shim.ChaincodeStubInterface, args []str
 	material := Material{}
 	json.Unmarshal(matValue, &material)
 
+	poPresent := false
 	//Add Sales Order information to Open PO in Material
 	for index, element := range material.OpenPurchaseOrders {
 		if strings.ToLower(element.PurchaseOrderID) == strings.ToLower(queryData.POReference) {
@@ -1119,9 +1120,11 @@ func (t *Testing1) createSalesOrder(stub shim.ChaincodeStubInterface, args []str
 			//Update the OpenPO in Material with Sales Order Information
 			element.AssociatedSalesOrders = append(element.AssociatedSalesOrders, materialAssociatedSalesOrder)
 			material.OpenPurchaseOrders[index] = element
-		} else {
-			return shim.Error("Invoke Error (Create Sales Order): PO Does not exists in Material! Please Specify Open PO Reference!")
+			poPresent = true
 		}
+	}
+	if poPresent == false {
+		return shim.Error("Invoke Error (Create Sales Order): PO Does not exists in Material! Please Specify Open PO Reference!")
 	}
 
 	// Store Material in Blockchain

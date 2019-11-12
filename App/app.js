@@ -162,7 +162,7 @@ app.get('/channel/block', awaitHandler(async (req, res) => {
 	res.send(message);
 }));
 
-app.get('/channel/block/tx_id', awaitHandler(async (req, res) => {
+app.get('/channel/block/txid', awaitHandler(async (req, res) => {
 	let args = toString(req.query.TxID)
 	logger.info('================ GET on ChannelInfo');
 	logger.info('##### Request INFO - args : ' + args);

@@ -21,7 +21,7 @@ testOrg1
 docker exec -e "CORE_PEER_TLS_ENABLED=true" -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/home/managedblockchain-tls-chain.pem" \
     -e "CORE_PEER_ADDRESS=$PEER" -e "CORE_PEER_LOCALMSPID=$MSP" -e "CORE_PEER_MSPCONFIGPATH=$MSP_PATH" \
     cli peer chaincode invoke -o $ORDERER -C $CHANNEL -n $CHAINCODENAME \
-    -c '{"Args":["createParticipant","{\"ParticipantType\":\"TEST\", \"OrgName\":\"TEST3ORG\", \"Email\":\"test3@gmail.com\"}","testOrg3"]}' --cafile $CAFILE --tls
+    -c '{"Args":["createParticipant","{\"ParticipantType\":\"TRANSPORTER\", \"OrgName\":\"transporterOrg\", \"Email\":\"transporterOrg@gmail.com\"}","transporter-01"]}' --cafile $CAFILE --tls
 
 {\"ParticipantType\":\"TEST\", \"OrgName\":\"TEST2ORG\", \"Email\":\"test2@gmail.com\"}
 testOrg2
@@ -39,7 +39,7 @@ testOrg1
 docker exec -e "CORE_PEER_TLS_ENABLED=true" -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/home/managedblockchain-tls-chain.pem" \
     -e "CORE_PEER_ADDRESS=$PEER" -e "CORE_PEER_LOCALMSPID=$MSP" -e "CORE_PEER_MSPCONFIGPATH=$MSP_PATH" \
     cli peer chaincode invoke -o $ORDERER -C $CHANNEL -n $CHAINCODENAME \
-    -c '{"Args":["getParticipant","testOrg1", "testOrg1"]}' --cafile $CAFILE --tls
+    -c '{"Args":["getParticipant","manufacturer-01", "manufacturer-01"]}' --cafile $CAFILE --tls
 
 #Delete Participant
 testOrg1

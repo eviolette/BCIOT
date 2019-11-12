@@ -1,61 +1,61 @@
 //Inputs
 //Purchase Order (ME23n) - RETAILER
 {
-    "PurchaseOrderID": "TESTPO0002",
-    "Vendor": "TEST VENDOR",
-    "LineItemNumber": "TESTLI0001",
-    "MaterialID": "TESTMAT0001",
-    "Quantity": 100
+    "PURCHASEORDERID": "TESTPO0001",
+    "VENDOR": "TEST VENDOR",
+    "LINEITEMNUMBER": "TESTLI0001",
+    "MATERIALID": "TESTMAT0001",
+    "QUANTITY": 100
 }
 //Production Order Goods Receipt (MIGO) - MANUFACTURER
 {
-    "ProductionOrderID": "TESTPRODORD0001",
-    "MaterialID": "TESTMAT0001",
-    "Quantity": 500,
-    "Plant": "TESTPLANT",
-    "StorageLocation": "TESTSLOC",
-    "BatchNumber": "TESTBATCH0001"
+    "PRODUCTIONORDERID": "TESTPRODORD0001",
+    "MATERIALID": "TESTMAT0001",
+    "QUANTITY": 500,
+    "PLANT": "TESTPLANT",
+    "STORAGELOCATION": "TESTSLOC",
+    "BATCHNUMBER": "TESTBATCH0001"
 }
 //Sales Order (VA01) - MANUFACTURER
 {
-    "SalesOrderID": "TESTSO0002",
-    "POReference": "TESTPO0002",
-    "LineItemNumber": "TESTLI0001",
-    "MaterialID": "TESTMAT0001",
-    "Quantity": 100
+    "SALESORDERID": "TESTSO0002",
+    "POREFERENCE": "TESTPO0002",
+    "LINEITEMNUMBER": "TESTLI0001",
+    "MATERIALID": "TESTMAT0001",
+    "QUANTITY": 100
 }
 //Delivery (VL01n) - MANUFACTURER
 {
-    "DeliveryNumber": "TESTDEL0002",
-    "MaterialID": "TESTMAT0001",
+    "DELIVERYNUMBER": "TESTDEL0002",
+    "MATERIALID": "TESTMAT0001",
     "HUID": "TESTHU0002",
-    "BatchNumber": "TESTBATCH0001",
-    "Quantity": 100,
-    "SalesOrderID": "TESTSO0002",
-    "LineItemNumber": "TESTLI0001"
+    "BATCHNUMBER": "TESTBATCH0001",
+    "QUANTITY": 100,
+    "SALESORDERID": "TESTSO0002",
+    "LINEITEMNUMBER": "TESTLI0001"
 }
 //Shipment (VT01n) - MANUFACTURER
 {
-    "DeliveryNumber": "TESTDEL0002",
-    "ShipmentID": "TESTSHIP0002",
-    "SalesOrderID": "TESTSO0002"
+    "DELIVERYNUMBER": "TESTDEL0002",
+    "SHIPMENTID": "TESTSHIP0002",
+    "SALESORDERID": "TESTSO0002"
 }
 //Shipment Sensor Data (IOT will send this data) - TRANSPORTER
 {
-    "ShipmentID": "TESTSHIP0002",
-    "Data": "{\"locData\": {\"c\": {\"o\": \"AT&T\",\"a\": [{\"i\": 4530559,\"l\": 56961,\"c\": 310,\"n\": 410}]}},\"tempData\": {\"Celcius\": 30.700001,\"Fahrenheit\": 78.260002,\"Kelvin\": 298.850006,\"Humidity\": 14.4,\"DewPoint\": -3.429169}}"
+    "SHIPMENTID": "TESTSHIP0002",
+    "DATA": "{\"locData\": {\"c\": {\"o\": \"AT&T\",\"a\": [{\"i\": 4530559,\"l\": 56961,\"c\": 310,\"n\": 410}]}},\"tempData\": {\"Celcius\": 30.700001,\"Fahrenheit\": 78.260002,\"Kelvin\": 298.850006,\"Humidity\": 14.4,\"DewPoint\": -3.429169}}"
 }
 //Shipment Contamination (IOT will send this data) - TRANSPORTER
 {
-    "ShipmentID": "TESTSHIP0002",
+    "SHIPMENTID": "TESTSHIP0002",
 }
 //Purchase Order Goods Receipt (MIGO) - RETAILER
 {
-    "PurchaseOrderID": "TESTPO0002",
-    "LineItemNumber": "TESTLI0001",
-    "MaterialID": "TESTMAT0001",
-    "Quantity": 100,
-    "Plant": "TESTPLANT",
-    "StorageLocation": "TESTSLOC",
-    "BatchNumber": "TESTBATCH0001"
+    "PURCHASEORDERID": "TESTPO0002",
+    "LINEITEMNUMBER": "TESTLI0001",
+    "MATERIALID": "TESTMAT0001",
+    "QUANTITY": 100,
+    "PLANT": "TESTPLANT",
+    "STORAGELOCATION": "TESTSLOC",
+    "BATCHNUMBER": "TESTBATCH0001"
 }
