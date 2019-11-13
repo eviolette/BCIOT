@@ -3,11 +3,11 @@
 #Intall and Upgrade Chaincode
 docker exec -e "CORE_PEER_TLS_ENABLED=true" -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/home/managedblockchain-tls-chain.pem" \
     -e "CORE_PEER_LOCALMSPID=$MSP" -e "CORE_PEER_MSPCONFIGPATH=$MSP_PATH" -e "CORE_PEER_ADDRESS=$PEER"  \
-    cli peer chaincode install -n $CHAINCODENAME -v v10 -p $CHAINCODEDIR
+    cli peer chaincode install -n $CHAINCODENAME -v v11 -p $CHAINCODEDIR
 
 docker exec -e "CORE_PEER_TLS_ENABLED=true" -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/home/managedblockchain-tls-chain.pem" \
     -e "CORE_PEER_ADDRESS=$PEER" -e "CORE_PEER_LOCALMSPID=$MSP" -e "CORE_PEER_MSPCONFIGPATH=$MSP_PATH" \
-    cli peer chaincode upgrade -o $ORDERER -C $CHANNEL -n $CHAINCODENAME -v v10 \
+    cli peer chaincode upgrade -o $ORDERER -C $CHANNEL -n $CHAINCODENAME -v v11 \
     -c '{"Args":[]}' --cafile $CAFILE --tls
 
 
@@ -31,7 +31,7 @@ docker exec -e "CORE_PEER_TLS_ENABLED=true" -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt
     cli peer chaincode invoke -o $ORDERER -C $CHANNEL -n $CHAINCODENAME \
     -c '{"Args":["createParticipant","{\"ParticipantType\":\"TEST\", \"OrgName\":\"TEST2ORG\", \"Email\":\"test2@gmail.com\"}","testOrg2"]}' --cafile $CAFILE --tls
 
-
+                           
 #Get Participant
 testOrg1
 testOrg1
