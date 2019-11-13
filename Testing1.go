@@ -1867,15 +1867,18 @@ func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args 
 	//Update the Purchase Order in Material as closed PO
 	//Keep Track of Associated Sales Order to be used later
 	matSalesOrderInfo := MaterialAssociatedSalesOrder{}
+	materialOPENPOPresentFlag := false
 	for index, element := range material.OpenPurchaseOrders {
 		if (strings.ToLower(element.PurchaseOrderID) == strings.ToLower(queryData.PurchaseOrderID)) && (strings.ToLower(element.Owner) == strings.ToLower(participantID)) && (element.Deleted == false) {
 			material.ClosedPurchaseOrders = append(material.ClosedPurchaseOrders, element)
 			material.OpenPurchaseOrders = append(material.OpenPurchaseOrders[:index], material.OpenPurchaseOrders[index+1:]...)
 			matSalesOrderInfo = element.AssociatedSalesOrders[0]
+			materialOPENPOPresentFlag = true
 			break
-		} else {
-			shim.Error("Invoke Error (GR Purchase Order):  Material Does Not Contain the Purchase Order Information")
 		}
+	}
+	if materialOPENPOPresentFlag == false {
+		return shim.Error("Invoke Error (GR Purchase Order):  Material Does Not Contain the Purchase Order Information")
 	}
 
 	//****************************************************************
