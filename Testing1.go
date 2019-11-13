@@ -1763,6 +1763,8 @@ func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args 
 		return shim.Error("Invoke Error: Incorrect number of arguments - Two Argument expected")
 	}
 
+	logger.Infof("STARTING PURCHASE ORDER GR")
+
 	//Define the structure for expected incoming JSON as argument
 	type QueryData struct {
 		PurchaseOrderID string `json:"PurchaseOrderID"`
@@ -1781,6 +1783,7 @@ func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args 
 	if err != nil {
 		return shim.Error("Invoke Error (GR Purchase Order):  Invalid Data - Check Payload")
 	}
+	logger.Infof("QUERY DATA ACCEPTED")
 	//Get Invoking Participant
 	participantNamespace := "PARTICIPANT"
 	participantID := string(args[1])
@@ -1797,6 +1800,7 @@ func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args 
 	if value, geterr := stub.GetState(strings.ToLower(participantKey)); geterr != nil || value == nil {
 		return shim.Error("Invoke Error (Delete Shipment): Invoking Participant Does Not Exists! Please Enroll Participant")
 	}
+	logger.Infof("PARTICIPANT CHECKED!")
 
 	//Six Asset will be updated:
 	//(1) Material
@@ -1817,6 +1821,8 @@ func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args 
 	}
 	material := Material{}
 	json.Unmarshal(matValue, &material)
+
+	logger.Infof("MATERIAL FOUND!")
 
 	//Check if Batch Exist in material or Create New Material Batch Info
 	activeBatchPresentFlag := false
@@ -1865,6 +1871,8 @@ func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args 
 		material.Batches = append(material.Batches, materialBatch)
 	}
 
+	logger.Infof("MATERIAL BATCH UPDATED!")
+
 	//Update the Purchase Order in Material as closed PO
 	//Keep Track of Associated Sales Order to be used later
 	matSalesOrderInfo := MaterialAssociatedSalesOrder{}
@@ -1881,6 +1889,8 @@ func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args 
 	if materialOPENPOPresentFlag == false {
 		return shim.Error("Invoke Error (GR Purchase Order):  Material Does Not Contain the Purchase Order Information")
 	}
+
+	logger.Infof("MATERIAL PO UPDATED!")
 
 	//****************************************************************
 	//Updating new PO Goods Receipt information inside Batch
