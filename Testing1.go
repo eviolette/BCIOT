@@ -1121,6 +1121,7 @@ func (t *Testing1) createSalesOrder(stub shim.ChaincodeStubInterface, args []str
 			element.AssociatedSalesOrders = append(element.AssociatedSalesOrders, materialAssociatedSalesOrder)
 			material.OpenPurchaseOrders[index] = element
 			poPresent = true
+			break
 		}
 	}
 	if poPresent == false {
