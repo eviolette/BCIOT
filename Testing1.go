@@ -1881,7 +1881,11 @@ func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args 
 		if (strings.ToLower(element.PurchaseOrderID) == strings.ToLower(queryData.PurchaseOrderID)) && (strings.ToLower(element.Owner) == strings.ToLower(participantID)) && (element.Deleted == false) {
 			material.ClosedPurchaseOrders = append(material.ClosedPurchaseOrders, element)
 			material.OpenPurchaseOrders = append(material.OpenPurchaseOrders[:index], material.OpenPurchaseOrders[index+1:]...)
-			matSalesOrderInfo = element.AssociatedSalesOrders[0]
+			if len(element.AssociatedSalesOrders) > 0 {
+				matSalesOrderInfo = element.AssociatedSalesOrders[0]
+			} else {
+				return shim.Error("Invoke Error (GR Purchase Order):  PO Does Not Contain Associated Sales Order")
+			}
 			materialOPENPOPresentFlag = true
 			break
 		}
@@ -1970,7 +1974,12 @@ func (t *Testing1) reportPurchaseOrderGR(stub shim.ChaincodeStubInterface, args 
 
 	//Get Shipment Information
 	//Key for fetching/storing the Asset
-	shipmentkeystring := shipmentNamespace + "-" + delivery.Shipments[0]
+	shipmentkeystring := shipmentNamespace + "-"
+	if len(delivery.Shipments) > 0 {
+		shipmentkeystring = shipmentNamespace + "-" + delivery.Shipments[0]
+	} else {
+		return shim.Error("Invoke Error (GR Purchase Order): Shipment Does Not Exists inside Delivery!")
+	}
 	//Get Delivery
 	shipmentValue, shipmentGetErr := stub.GetState(strings.ToLower(shipmentkeystring))
 	if shipmentGetErr != nil || shipmentValue == nil {
