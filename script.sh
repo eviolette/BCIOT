@@ -3,11 +3,11 @@
 #Intall and Upgrade Chaincode
 docker exec -e "CORE_PEER_TLS_ENABLED=true" -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/home/managedblockchain-tls-chain.pem" \
     -e "CORE_PEER_LOCALMSPID=$MSP" -e "CORE_PEER_MSPCONFIGPATH=$MSP_PATH" -e "CORE_PEER_ADDRESS=$PEER"  \
-    cli peer chaincode install -n $CHAINCODENAME -v v12 -p $CHAINCODEDIR
+    cli peer chaincode install -n $CHAINCODENAME -v v14 -p $CHAINCODEDIR
 
 docker exec -e "CORE_PEER_TLS_ENABLED=true" -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/home/managedblockchain-tls-chain.pem" \
     -e "CORE_PEER_ADDRESS=$PEER" -e "CORE_PEER_LOCALMSPID=$MSP" -e "CORE_PEER_MSPCONFIGPATH=$MSP_PATH" \
-    cli peer chaincode upgrade -o $ORDERER -C $CHANNEL -n $CHAINCODENAME -v v12 \
+    cli peer chaincode upgrade -o $ORDERER -C $CHANNEL -n $CHAINCODENAME -v v14 \
     -c '{"Args":[]}' --cafile $CAFILE --tls
 
 
@@ -323,7 +323,7 @@ docker exec -e "CORE_PEER_TLS_ENABLED=true" -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt
 docker exec -e "CORE_PEER_TLS_ENABLED=true" -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/home/managedblockchain-tls-chain.pem" \
     -e "CORE_PEER_ADDRESS=$PEER" -e "CORE_PEER_LOCALMSPID=$MSP" -e "CORE_PEER_MSPCONFIGPATH=$MSP_PATH" \
     cli peer chaincode invoke -o $ORDERER -C $CHANNEL -n $CHAINCODENAME \
-    -c '{"Args":["reportPurchaseOrderGR","{\"PurchaseOrderID\":\"4500000020\",\"LineItemNumber\":\"00010\",\"MaterialID\":\"VACTEST-03\",\"Quantity\":10, \"Plant\":\"TESTPLANT\",\"StorageLocation\":\"TESTSLOC\",\"BatchNumber\":\"BATCH02\"}","retailer-01"]}' --cafile $CAFILE --tls
+    -c '{"Args":["reportPurchaseOrderGR","{\"PurchaseOrderID\":\"4500000018\",\"LineItemNumber\":\"00010\",\"MaterialID\":\"VACTEST-03\",\"Quantity\":10, \"Plant\":\"TESTPLANT\",\"StorageLocation\":\"TESTSLOC\",\"BatchNumber\":\"BATCH02\"}","retailer-01"]}' --cafile $CAFILE --tls
 
     # {\"PurchaseOrderID\":\"TESTPO0001\",\"LineItemNumber\":\"TESTLI0001\",\"MaterialID\":\"TESTMAT0001\",\"Quantity\":100, \"Plant\":\"TESTPLANT\",\"StorageLocation\":\"TESTSLOC\",\"BatchNumber\":\"TESTBATCH0001\"}
 
