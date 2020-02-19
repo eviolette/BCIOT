@@ -3,6 +3,7 @@
 //****Description: Chaincode logic for IoT Enabled Blockchain for Supply Chain of Perishable Goods
 //****Author: Rom Solanki
 //****Author Email: rosolanki@deloitte.com
+//****Co-Author: Ajay Singh
 //********************************************************************************************************
 
 package main
