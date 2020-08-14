@@ -7,7 +7,7 @@ hfc.setLogger(logger);
 
 async function getClientForOrg(userorg, username) {
 	logger.info('============ START getClientForOrg for org %s and user %s', userorg, username);
-	let config = './connection-profile/bciot-connection-profile.yaml';
+	let config = './connection-profile/retailerorg.json';
 	let orgLower = userorg.toLowerCase();
 	let clientConfig = './connection-profile/client-config.yaml';
 
