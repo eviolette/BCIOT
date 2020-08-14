@@ -4,15 +4,14 @@
     "channelName":"bciotchannel",
     "chaincodeName":"Testing1",
     "eventWaitTime":"15000",
-    "organizationIdentity":"testOrg1",
+    "organizationIdentity":"retailerorg",
     "peers":[
-        "nd-3OY6SVJHHREUPGQ2MNSV4FIQEY",
-        "nd-SB5XUNND4VB2NN6445EEGPOZGE"
+        "peer1"
     ],
     "admins":[
        {
           "username":"admin",
-          "secret":"AdminPwd1"
+          "secret":"Continuation1!"
        }
     ]
 }
